@@ -25,6 +25,7 @@ class InvoiceGeneratorTest {
     private InvoiceGenerator invoiceGenerator;
     private BiFunction<String,Double, InvoiceLine> mockInvoiceLineMaker;
     private BiFunction<String, List<InvoiceLine>, Invoice> mockInvoiceMaker;
+
     @BeforeEach
     @SuppressWarnings("unchecked")
     public void setUp() {
