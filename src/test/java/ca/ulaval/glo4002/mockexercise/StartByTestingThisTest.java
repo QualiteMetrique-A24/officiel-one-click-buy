@@ -5,6 +5,7 @@ import ca.ulaval.glo4002.mockexercise.do_not_edit.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -28,12 +29,55 @@ public class StartByTestingThisTest {
 
         ProductRepository productRepository = mock(ProductRepository.class);
 //        when(productRepository.findBySku(PRODUCT_SKU)).thenReturn(mockProduct);
-        service = new StartByTestingThis(cartFactory, productRepository);
+
+        InvoiceGenerator invoiceGenerator = mock(InvoiceGenerator.class);
+
+        service = new StartByTestingThis(cartFactory, productRepository, invoiceGenerator);
     }
 
     @Test
     public void givenABC_whenWhat_thenOk() {
 
+
+
+
     }
+
+    @Test
+    public void givenNullClientEmail_whenOneClickBuy_thenThrowsException() {
+        String PRODUCT_SKU = "12345678";
+
+        assertThrows(CustomException.class, () -> service.oneClickBuy(null, PRODUCT_SKU));
+    }
+    @Test
+    public void givenEmptyClientEmail_whenOneClickBuy_thenThrowsException() {
+        String EMPTY_CLIENT_EMAIL = "";
+        String PRODUCT_SKU = "12345678";
+
+        assertThrows(CustomException.class, () -> service.oneClickBuy(EMPTY_CLIENT_EMAIL, PRODUCT_SKU));
+    }
+    @Test
+    public void givenInvalidClientEmail_whenOneClickBuy_thenThrowsException() {
+        String INVALID_CLIENT_EMAIL = "invalid email";
+        String PRODUCT_SKU = "12345678";
+
+        assertThrows(CustomException.class, () -> service.oneClickBuy(INVALID_CLIENT_EMAIL, PRODUCT_SKU));
+    }
+
+    @Test
+    public void givenNullProductSku_whenOneClickBuy_thenThrowsException() {
+        String CLIENT_EMAIL = "perfectly@valid.email";
+
+        assertThrows(CustomException.class, () -> service.oneClickBuy(CLIENT_EMAIL, null));
+    }
+
+    @Test
+    public void givenEmptyProductSku_whenOneClickBuy_thenThrowsException() {
+        String CLIENT_EMAIL = "perfectly@valid.email";
+        String EMPTY_PRODUCT_SKU = "";
+
+        assertThrows(CustomException.class, () -> service.oneClickBuy(CLIENT_EMAIL, EMPTY_PRODUCT_SKU));
+    }
+
 
 }
