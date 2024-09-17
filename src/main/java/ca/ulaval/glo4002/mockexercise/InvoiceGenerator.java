@@ -15,10 +15,6 @@ public class InvoiceGenerator {
     BiFunction<String, Double, InvoiceLine> makeInvoiceLine = InvoiceLine::new;
     BiFunction<String, List<InvoiceLine>, Invoice> makeInvoice = Invoice::new;
 
-    public InvoiceGenerator() {
-
-    }
-
     public Invoice generate(String clientEmail, List<Product> products) {
         List<InvoiceLine> lines = products.stream()
                 .map(product_stream -> makeInvoiceLine.apply(product_stream.getName(), product_stream.getPrice()))
