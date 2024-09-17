@@ -11,17 +11,20 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class InvoiceGenerator {
-    BiFunction<String,Double,InvoiceLine> makeInvoiceLine = InvoiceLine::new;
+    // TODO: Is this a good option?
+    BiFunction<String, Double, InvoiceLine> makeInvoiceLine = InvoiceLine::new;
+    BiFunction<String, List<InvoiceLine>, Invoice> makeInvoice = Invoice::new;
 
-    public InvoiceGenerator(){
+    public InvoiceGenerator() {
 
     }
-    public Invoice generate(String clientEmail, List<Product> products){
+
+    public Invoice generate(String clientEmail, List<Product> products) {
         List<InvoiceLine> lines = products.stream()
                 .map(product_stream -> makeInvoiceLine.apply(product_stream.getName(), product_stream.getPrice()))
                 .collect(Collectors.toList());
 
         // Étape 5 : Retourner l'invoice
-        return new Invoice(clientEmail, lines);
+        return makeInvoice.apply(clientEmail, lines);
     }
 }
